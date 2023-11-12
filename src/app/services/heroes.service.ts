@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HeroeModel } from '../models/hereo.model';
+import { HttpClient } from '@angular/common/http'
+import { HeroeModel } from '../models/heroe.model';
 import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -9,33 +10,52 @@ export class HeroesService {
 
   private url = 'https://login-app-d7026-default-rtdb.firebaseio.com';
 
-  constructor( private http: HttpClient ) { }
+  constructor( private http: HttpClient) { }
 
-
-  crearHeroe( heroe: HeroeModel )  {
-
+  crearHeroe( heroe: HeroeModel){
     return this.http.post(`${ this.url }/heroes.json`, heroe)
-            .pipe(
-              map( (resp: any) => {
-                heroe.id = resp.name;
-                return heroe;
-              })
-            );
-
+    .pipe(
+      map((resp: any) =>{
+        heroe.id = resp.name;
+        return heroe;
+      })
+    );
   }
 
+  actualizarHeroe(heroe: HeroeModel){
 
-
-
-  actualizarHeroe(heroe: HeroeModel)  {
-
-    const heroeTemp =   {
+    const heroeTemp = {
       ...heroe
     };
 
     delete heroeTemp.id;
 
-    return this.http.put(`${ this.url }/heroes/${ heroe.id }.json`, heroeTemp);
+
+    return this.http.put(`${this.url}/heroes/${heroe.id}.json`, heroeTemp);
   }
+
+
+  getHeroes(){
+    return this.http.get(`${this.url}/heroes.json`)
+    .pipe(
+      map( this.crearArreglo )
+    );
+  }
+
+  private crearArreglo(heroesObj: { [key: string]: HeroeModel } | any): HeroeModel[] {
+    const heroes: HeroeModel[] = [];
+
+    if (heroesObj === null) {
+      return [];
+    }
+
+    Object.keys(heroesObj).forEach(key => {
+      const heroe: HeroeModel = heroesObj[key];
+      heroes.push(heroe);
+    });
+
+    return heroes;
+  }
+
 
 }

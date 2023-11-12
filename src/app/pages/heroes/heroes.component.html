@@ -1,5 +1,7 @@
-<h1>Listado de Héroes</h1>
+<h1>Listado de Heroes</h1>
+
 <hr>
+
 <div class="row">
   <div class="col text-right">
     <button routerLink="/heroe/nuevo"
@@ -8,6 +10,8 @@
     </button>
   </div>
 </div>
+
+
 <table class="table mt-3 animated fadeIn faster">
   <thead class="table-dark">
     <tr>
@@ -19,12 +23,19 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
+    <tr *ngFor="let heroe of heroes; let i = index">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{ heroe.nombre}}</td>
+      <td>{{heroe.poder}}</td>
+      <td>
+
+        <label *ngIf="heroe.vivo" class="badge badge-success">Vivo</label>
+        <label *ngIf="!heroe.vivo" class="badge badge-danger">Muerto</label>
+
+
+
+      </td>
+      <td>tools</td>
     </tr>
   </tbody>
 </table>
@@ -46,5 +57,3 @@
 Espere porfavor
   </p>
 </div>
-
-
