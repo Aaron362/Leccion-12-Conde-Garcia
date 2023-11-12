@@ -2,7 +2,7 @@
 
 export class HeroeModel {
 
-  id!: string;
+  id?: string;
   nombre!: string;
   poder!: string;
   vivo: boolean;
